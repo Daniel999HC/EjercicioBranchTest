@@ -1,0 +1,46 @@
+import unittest
+
+def es_eligibile_para_descuento(edad, es_miembro):
+    """
+    Determina si un usuario es elegible para un descuento.
+
+    Parámetros:
+    edad (int): Edad del usuario.
+    es_miembro (bool): Si el usuario es un miembro registrado.
+
+    Retorna:
+    bool: Verdadero si es elegible, falso en caso contrario.
+    """
+    if edad < 0:
+        raise ValueError("La edad no puede ser negativa")
+    if edad < 18:
+        return False
+    if edad >= 65 or es_miembro:
+        return True
+    return False
+
+class TestEsEligibileParaDescuento(unittest.TestCase):
+    def test_edad_negativa(self):
+        with self.assertRaises(ValueError):
+            es_eligibile_para_descuento(-1, True)
+    
+    def test_edad_menor_de_18_no_miembro(self):
+        self.assertFalse(es_eligibile_para_descuento(17, False))
+
+    def test_edad_menor_de_18_miembro(self):
+        self.assertFalse(es_eligibile_para_descuento(17, True))
+
+    def test_edad_entre_18_y_64_no_miembro(self):
+        self.assertFalse(es_eligibile_para_descuento(30, False))
+
+    def test_edad_entre_18_y_64_miembro(self):
+        self.assertTrue(es_eligibile_para_descuento(30, True))
+
+    def test_edad_65_o_mayor_no_miembro(self):
+        self.assertTrue(es_eligibile_para_descuento(65, False))
+
+    def test_edad_65_o_mayor_miembro(self):
+        self.assertTrue(es_eligibile_para_descuento(65, True))
+
+if __name__ == '__main__':
+    unittest.main()
